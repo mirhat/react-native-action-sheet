@@ -6,17 +6,21 @@ import { ActionSheetProps } from './types';
 export default function connectActionSheet<OwnProps = any>(
   WrappedComponent: React.ComponentType<OwnProps & ActionSheetProps>
 ) {
-  const ConnectedActionSheet = (props: OwnProps) => {
+  const ConnectedActionSheet = React.forwardRef((props: OwnProps, ref) => {
     return (
       <Consumer>
         {({ showActionSheetWithOptions }) => {
           return (
-            <WrappedComponent {...props} showActionSheetWithOptions={showActionSheetWithOptions} />
+            <WrappedComponent
+              ref={ref}
+              {...props}
+              showActionSheetWithOptions={showActionSheetWithOptions}
+            />
           );
         }}
       </Consumer>
     );
-  };
+  });
 
   return hoistNonReactStatic(ConnectedActionSheet, WrappedComponent);
 }
